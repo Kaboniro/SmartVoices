@@ -19,9 +19,9 @@ import java.sql.*;
 
 
 public class loginController {
-    String url = "jdbc:mysql://emma@localhost:3306/smartvoices";
-    String user = "emma";
-    String pass = "namaste";
+    final String url = "jdbc:mysql://emma@localhost:3306/smartvoices";
+    final String user = "emma";
+    final String pass = "namaste";
 
 
     @FXML

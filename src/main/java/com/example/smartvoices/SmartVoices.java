@@ -10,7 +10,7 @@ import java.io.IOException;
 public class SmartVoices extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SmartVoices.class.getResource("login.fxml"));
+       FXMLLoader fxmlLoader = new FXMLLoader(SmartVoices.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 402, 301);
         stage.setTitle("Login");
         stage.setScene(scene);

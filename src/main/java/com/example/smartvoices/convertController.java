@@ -1,104 +1,89 @@
 package com.example.smartvoices;
 
-import javafx.stage.FileChooser;
-import marytts.LocalMaryInterface;
-import marytts.MaryInterface;
-import marytts.exceptions.MaryConfigurationException;
-import marytts.exceptions.SynthesisException;
-import marytts.util.data.audio.AudioPlayer;
-import java.io.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.speech.AudioException;
+import javax.speech.Central;
+import javax.speech.EngineException;
+import javax.speech.EngineStateError;
+import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerModeDesc;
+import javax.speech.synthesis.Voice;
+
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
-public class convertController {
+import java.io.File;
 
+    public class convertController {
 
-    @FXML
-    private TextArea inputTextArea;
+        @FXML
+        private AnchorPane anchorPane;
 
-    private Connection connection;
+        @FXML
+        private TextArea textArea;
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/smartvoices";
-    private static final String DB_USERNAME = "emma";
-    private static final String DB_PASSWORD = "namaste";
+        @FXML
+        private MediaView mediaView;
 
-    @FXML
-    private void convertAndSave() throws MaryConfigurationException {
-        MaryInterface marytts = new LocalMaryInterface();
-        AudioPlayer audioPlayer = new AudioPlayer();
+        @FXML
+        private Button convertButton;
 
-        String text = inputTextArea.getText();
-        if(!text.isEmpty()){
-            try {
-                AudioInputStream audioInputStream = marytts.generateAudio(text);
-                audioPlayer.setAudio(audioInputStream);
+        @FXML
+        private Button shareButton;
 
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Save Audio file");
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("WAV files *.wav"));
-                File audiofile = fileChooser.showSaveDialog(inputTextArea.getScene().getWindow());
+        @FXML
+        private Button exitButton;
 
-                if(audiofile != null){
-                    AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, audiofile);
+        private FileChooser fileChooser;
+        private MediaPlayer mediaPlayer;
 
-                }
-                String path = audiofile.getAbsolutePath();
+        public void PlayButtonAction() {
+            fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Video Files", "*.mp4", "*.m4v", "*.mov", "*.flv", "*.webm"),
+                    new FileChooser.ExtensionFilter("All Files", "*.*"));
 
-                String hash = computeHash(path);
-                saveToDatabase(path, hash);
+            mediaView.setMediaPlayer(mediaPlayer);
+        }
 
-            } catch (SynthesisException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        @FXML
+        private void ConvertButtonAction() {
+            String text = textArea.getText();
+            // Convert text
+            // ...
+        }
+
+        @FXML
+        private void ShareButtonAction() {
+            // Share converted video
+            // ...
+        }
+
+        @FXML
+        private void ExitButtonAction() {
+            Stage stage = (Stage) anchorPane.getScene().getWindow();
+            stage.close();
+        }
+
+        @FXML
+        private void OpenButtonAction() {
+            File file = fileChooser.showOpenDialog(anchorPane.getScene().getWindow());
+            if (file != null) {
+                Media media = new Media(file.toURI().toString());
+                mediaPlayer = new MediaPlayer(media);
+                mediaView.setMediaPlayer(mediaPlayer);
+                mediaPlayer.play();
             }
         }
     }
 
 
-    private String computeHash(String path) {
-        String hashh = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            InputStream is = new FileInputStream(path);
-            byte[] buffer = new byte[1024];
-            int nread;
-            while ((nread = is.read(buffer)) != -1) {
-                md.update(buffer, 0, nread);
-            }
-            byte[] digest = md.digest();
-            StringBuilder sb = new StringBuilder();
-            for (byte b : digest) {
-                sb.append(String.format("%02x", b));
-            }
-            hashh = sb.toString();
-        } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-        }
-        return hashh;
-    }
-
-    private void saveToDatabase(String path, String hash) {
-        try {
-            if (connection == null) {
-                connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-            }
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO audios (path, hash) VALUES (?, ?)");
-            preparedStatement.setString(1, path);
-            preparedStatement.setString(2, hash);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-}

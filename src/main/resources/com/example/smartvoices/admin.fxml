@@ -40,7 +40,10 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
@@ -57,11 +60,11 @@
             <Label layoutX="77.0" layoutY="14.0" text="Users" />
             <Label layoutX="302.0" layoutY="14.0" text="Groups" />
             <Label layoutX="502.0" layoutY="14.0" text="Audios" />
-            <SplitPane dividerPositions="0.5452436194895591" layoutX="4.0" layoutY="200.0" prefHeight="195.0" prefWidth="520.0">
+            <SplitPane dividerPositions="0.5193050193050193" layoutX="4.0" layoutY="200.0" prefHeight="195.0" prefWidth="520.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
-                        <LineChart layoutY="-5.0" prefHeight="195.0" prefWidth="233.0">
+                        <LineChart layoutY="28.0" prefHeight="162.0" prefWidth="233.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -69,6 +72,7 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </LineChart>
+                        <Label layoutX="99.0" layoutY="14.0" text="Traffic" />
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="193.0" prefWidth="220.0">
@@ -85,16 +89,29 @@
                          <HBox spacing="10.0">
                              <Label fx:id="trafficLabel" />
                          </HBox>
-                          <Label layoutY="46.0" text="Number of New Groups Today:" />
-                          <Label layoutY="89.0" prefHeight="5.0" prefWidth="162.0" text="Amount of Traffic Today:" />
-                          <Label layoutY="131.0" prefHeight="16.0" prefWidth="194.0" text="Number of Sessions Today:" />
-                          <Label layoutY="8.0" text="Number of Users:" />
+                        <GridPane gridLinesVisible="true" layoutX="6.0" layoutY="44.0" prefHeight="142.0" prefWidth="233.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="No of users" />
+                              <Label text="No of Groups" GridPane.rowIndex="1" />
+                              <Label text="No of Sessions" GridPane.rowIndex="2" />
+                           </children>
+                        </GridPane>
+                        <Label alignment="CENTER" layoutX="55.0" layoutY="16.0" prefHeight="16.0" prefWidth="135.0" text="Statistics" />
                      </children>
                   </AnchorPane>
               </items>
             </SplitPane>
-            <Button layoutX="546.0" layoutY="225.0" mnemonicParsing="false" text="Delete" />
-            <Button layoutX="555.0" layoutY="274.0" mnemonicParsing="false" text="Exit" />
+            <Button layoutX="546.0" layoutY="225.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Delete" />
+            <Button layoutX="546.0" layoutY="276.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Exit" />
       </children>
     </AnchorPane>
   </children>

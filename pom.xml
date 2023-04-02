@@ -86,11 +86,7 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-                <groupId>de.dfki.mary</groupId>
-                <artifactId>voice-cmu-slt-hsmm</artifactId>
-                <version>5.2</version>
-        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -101,6 +97,17 @@
             <artifactId>javafx-swing</artifactId>
             <version>17.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>de.dfki.mary</groupId>
+            <artifactId>marytts</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>de.dfki.mary</groupId>
+            <artifactId>marytts-client</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+
     </dependencies>
 
 
